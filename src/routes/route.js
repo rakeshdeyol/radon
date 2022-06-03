@@ -1,8 +1,12 @@
 const express = require('express');
 const myHelper = require('../util/helper')
 const underscore = require('underscore')
+//const lodash = require('lodash');
+const myLogger = require('./logger')
+
 
 const router = express.Router();
+
 
 router.get('/test-me', function (req, res) {
     myHelper.printDate()
@@ -14,6 +18,15 @@ router.get('/test-me', function (req, res) {
 });
 
 router.get('/hello', function (req, res) {
+    myLogger.chunk();
+    myLogger.tail();
+    myLogger.union();
+    myLogger.fromPairs();
+    
+   res.send('Hello there!')
+});
+
+router.get('/hello1', function (req, res) {
    
     res.send('Hello there!')
 });
