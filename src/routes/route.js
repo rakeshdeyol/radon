@@ -2,99 +2,100 @@ const express = require('express');
 const myHelper = require('../util/helper')
 const underscore = require('underscore')
 //const lodash = require('lodash');
-const myLogger = require('./logger')
+const myLogger = require('./logger');
+const { send } = require('express/lib/response');
 
 
 const router = express.Router();
 
 
-router.get('/test-me', function (req, res) {
-    myHelper.printDate()
-    myHelper.getCurrentMonth()
-    myHelper.getCohortData()
-    let firstElement = underscore.first(['Sabiha','Akash','Pritesh'])
-    console.log('The first element received from underscope function is '+firstElement)
-    res.send('My first ever api!')
+
+router.get('/movies', function (req, res) {
+    const movies = ['Rang de basanti', 'The shining', 'Lord of the rings', 'Batman begins']
+    return res.send({movies: movies})
 });
 
-router.get('/hello', function (req, res) {
-    myLogger.chunk();
-    myLogger.tail();
-    myLogger.union();
-    myLogger.fromPairs();
-    
-   res.send('Hello there!')
+
+router.get( '/movies/:indexNumber', function (req, res) {
+
+    const movies = ['Rang de basanti', 'The shining', 'Lord of the rings', 'Batman begins']
+   let num = req.params.indexNumber;
+    return res.send({movies: movies[num]})
 });
 
-router.get('/hello1', function (req, res) {
-   
-    res.send('Hello there!')
-});
+router.get( '/movies/:indexNumber', function (req, res) {
 
-//Q1.
-// -write an api which gives the missing number in an array of integers starting from 1….e.g [1,2,3,5,6,7] : 4 is missing
-// Your route code will look like this
-router.get('/sol1', function (req, res) {
-    //logic : sum of numbers is n(n+1)/2..so get sum of all numbers in array. now take sum of numbers till last digit in the array
-    let arr= [1,2,3,5,6,7]
-    let missingNumber
-    for(let i=0;i<arr.length-1;i++){
-        if(arr[i]+1 != arr[i+1]){
-            missingNumber= arr[i]+1;
-
-        }
-        
+    const movies = ['Rang de basanti', 'The shining', 'Lord of the rings', 'Batman begins']
+   let num = req.params.indexNumber;
+   for(let i=0;i<movies.length;i++){
+    if(movies[i]>movies[num]){
+        console.log('movies :'+movies[num]);
+        break;
+    }else{
+        console.log('Please enter the valid IndexNumber');
+        break;
     }
+ 
+ }
 
-    ///LOGIC WILL GO HERE 
-    res.send({ data: missingNumber  })
-
-
-});
-
-
-
-//Q2. 
-// -write an api which gives the missing number in an array of integers starting from anywhere….e.g [33, 34, 35, 37, 38]: 36 is missing
-// Your route code will look like this
-router.get("/sol2", function (req, res) {
-        //logic : sum of n consecutive numbers is [ n * (first + last) / 2  ]..so get sum of all numbers in array. now take sum of n consecutive numbers.. n would be length+1 as 1 number is missing
-        let arr= [33, 34, 35, 37, 38]
-        let missingNumber1
-
-        for(let i=0;i<arr.length-1;i++){
-            if(arr[i]+1 != arr[i+1]){
-                missingNumber1= arr[i]+1;
+     res.send('done')
     
-            }
-            
-        }
+});
 
-        ///LOGIC WILL GO HERE 
+router.get('/films1', function (req, res) {
+    const movie=
+        [ {
+            id: 1,
+            name: 'The Shining'
+        },
+        {
+            id: 2,
+            name: 'Incendies'
+       },
+        {
+            id: 3,
+            name: 'Rang de Basanti'
+       },
+        {
+            id: 4,
+            name : 'Finding Nemo'
+       }]
 
-        res.send(  { data: missingNumber1  }  );
+       
+         res.send(movie)
+       
 });
 
 
 
-router.get('/candidates', function(req, res){
-    console.log('Query paramters for this request are '+JSON.stringify(req.query))
-    let gender = req.query.gender
-    let state = req.query.state
-    let district = req.query.district
-    console.log('State is '+state)
-    console.log('Gender is '+gender)
-    console.log('District is '+district)
-    let candidates = ['Akash','Suman']
-    res.send(candidates)
-})
 
-router.get('/candidates/:canidatesName', function(req, res){
-    console.log('The request objects is '+ JSON.stringify(req.params))
-    console.log('Candidates name is '+req.params.canidatesName)
-    res.send('Done')
-})
-
-
+        let filmsArray = [ {
+            'id': 1,
+            'name': 'The Shining'}, 
+            {
+            'id': 2,
+            'name': 'Incendies'}, 
+            {
+            'id': 3,
+            'name': 'Rang de Basanti'}, 
+            {
+            'id': 4,
+            'name': 'Finding Nemo'}
+        ]
+        
+        router.get('/films/:filmId', function(req,res){
+            let filmIndex = req.params.filmId;
+            let index,film;
+            for(index=0;index<filmsArray.length;index++){
+                if(filmsArray[index].id==filmIndex){
+                    film = (filmsArray[index].name);
+                }
+            }
+            if(filmIndex >= filmsArray.length){
+                film = ("index does not exists");
+            }
+            res.send(film);
+        })
+       
 module.exports = router;
 // adding this comment for no reason
