@@ -1,59 +1,44 @@
 const express = require('express');
 const router = express.Router();
  
-let players =
-   [
-       {
-           "name": "manish",
-           "dob": "1/1/1995",
-           "gender": "male",
-           "city": "jalandhar",
-           "sports": [
-               "swimming"
-           ]
-       },
-       {
-           "name": "gopal",
-           "dob": "1/09/1995",
-           "gender": "male",
-           "city": "delhi",
-           "sports": [
-               "soccer"
-           ],
-       },
-       {
-           "name": "lokesh",
-           "dob": "1/1/1990",
-           "gender": "male",
-           "city": "mumbai",
-           "sports": [
-               "soccer"
-           ],
-       },
-   ]
+//Q1.
+   // -write an api which gives the missing number in an array of integers starting from 1….e.g [1,2,3,5,6,7] : 4 is missing
+ // Your route code will look like this
+ router.get("/sol1", function (req, res) {
+	   
+	   let arr= [1,2,3,5,6,7]
+	   let missingNumber
  
-   router.post('/players', function (req, res) {
+	   ///LOGIC WILL GO HERE
+       
+       for(let i=0;i<arr.length-1;i++){
+        if (arr[i]+1 != arr[i+1]) {
+            missingNumber=arr[i]+1
+            
+        }
+       }
+	   res.send(  { data: missingNumber  }  );
+ });
+
+
+ //Q2. 
+   // -write an api which gives the missing number in an array of integers starting from anywhere….e.g [33, 34, 35, 37, 38]: 36 is missing
+ // Your route code will look like this
+ router.get("/sol2", function (req, res) {
+		   //logic : sum of n consecutive numbers is [ n * (first + last) / 2  ]..so get sum of all numbers in array. now take sum of n consecutive numbers.. n would be length+1 as 1 number is missing
+		   let arr= [33, 34, 35, 37, 38]
+		   let missingNumber
  
-       //LOGIC WILL COME HERE
-       let playerName = req.body.name;
-       let playerData = req.body;
-       let nameRepeated = false;
-       let newData;
-       for(let i=0;i<players.length;i++){
-           if(players[i].name==playerName){
-               nameRepeated = true;
-               break; 
+		   ///LOGIC WILL GO HERE 
+
+           for(let i=0;i<arr.length-1;i++){
+            if (arr[i]+1 != arr[i+1]) {
+                missingNumber=arr[i]+1
+                
+            }
            }
-       }
-       if(nameRepeated==false){
-           players.push(playerData);
-           newData =  { data: players , status: true };
-       }else{
-           newData = { data: players , status: true };
-       }
-       res.send(newData);
-   })
-        
-   
   
+		   res.send(  { data: missingNumber  }  );
+ });
+
 module.exports = router;
